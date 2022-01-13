@@ -14,8 +14,8 @@ void loop()
     outputValue = map(sensorValue, 0, 1023, 0, 100);
 
     char buffer[10];
-    sprintf(buffer, "{pm10:%u}", outputValue);
+    sprintf(buffer, "{\"pm10\":%u}", outputValue);
     Serial.println(buffer);
     
-    delay(200);
+    delay(700);
 }

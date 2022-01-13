@@ -52,11 +52,11 @@ class QuickQuery
 
             $result =  filter_var($input_data[$key], $this->getValidationFilter($type));
 
-            if ($result || ($type == "int" && $result == 0) ) {
+            if ($result || ($type == "int" && $result === 0) ) {
                 $data[$key] = $result; // update data array with filtered value
             } else {
                 http_response_code(400);
-                $response = ["errorInfo" => "Wrong input variable: $key"];
+                $response = ["errorInfo" => "Wrong input variable of type $type: $key"];
                 die(json_encode($response));
             }
         }
@@ -84,6 +84,7 @@ class QuickQuery
                 break;
             case 'json-input':
                 $input_data = json_decode(file_get_contents('php://input'), true);
+
                 if (is_null($input_data)) {
                     http_response_code(400);
                     $response = ["errorInfo" => "Invalid input JSON"];
