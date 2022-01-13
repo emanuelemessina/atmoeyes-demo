@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<head>
+
+    <title>AtmoEyes - Live Data</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+    <!-- Mapbox -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+
+    <!-- Utils -->
+    <script src="utils/utils.js"></script>
+
+    <!-- Local -->
+    <link rel="stylesheet" href="css/index.css">
+
+</head>
+
+<script>
+    (async () => {
+
+            await domContentLoad();
+
+            // create map
+            mapboxgl.accessToken =
+                'pk.eyJ1IjoiZW1hbnVlbGVtZXNzaW5hIiwiYSI6ImNreWE3eHY0aTAwbzMyb3FvdHVub2JlbWYifQ.vT2-2yybA0bM-k6r4RDtpw';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [13.348214025435569, 38.103685750824894], // unipa
+                zoom: 16
+            });
+
+            // setup map
+            map.on('load', async () => {
+
+                    const initialData = await getData(); // 1) get data
+
+                    map.addSource('aqi-data', { // 2) register data source
+                        type: 'geojson',
+                        data: initialData
+                    });
+
+                    // 3) add circle layer
+                    map.addLayer({
+                            id: 'aqi-circle-layer',
+                            type: 'circle',
+                            source: 'aqi-data',
+                            maxzoom: 20,
+                            paint: {
+                                // assign color values be applied to points depending on their density
+                                'circle-color': [
+                                    "interpolate",
+                                    ["linear"],
+                                    ["get", "aqi"],
+                                    0,
+                                    "hsl(180, 88%, 88%)",
+                                    100,
+                                    "hsl(0, 100%, 48%)"
+                                ],
+                                // increase radius as zoom increases
+                                'circle-radius': [
+                                    "interpolate",
+                                    ["linear"],
+                                    ["zoom"],
+                                    0,
+                                    10,
+                                    22,
+                                    50
+                                ],
+                                // less aqi more blur
+                                "circle-blur": [
+                                    "interpolate",
+                                    ["linear"],
+                                    ["get", "aqi"],
+                                    0,
+                                    1,
+                                    100,
+                                    0
+                                ],
+                                // 
+                                'circle-opacity': {
+                                    default: 0.7,
+                                    stops: [
+                                        [14, 0.7],
+                                    ]
+                                }
+                            }
+                        },
+                        'waterway-label'
+                    );
+
+                // 4) update data source periodically
+                const updateSourceInterval = setInterval(async () => {
+                    const geojson = await getData(updateSourceInterval);
+                    map.getSource('aqi-data').setData(geojson);
+                }, 500)
+
+                async function getData(updateSource) {
+
+                    try {
+
+                        var response = await fetch(
+                            '../backend/data/aqi', {
+                                method: 'GET'
+                            }
+                        );
+                        var data = (await response.json()).data;
+
+                        var geojson = {
+                            'type': 'FeatureCollection',
+                            'features': data.map(entry => {
+                                return {
+                                    'type': 'Feature',
+                                    'properties': {
+                                        "aqi": parseInt(entry.value),
+                                    },
+                                    'geometry': {
+                                        'type': 'Point',
+                                        'coordinates': [parseFloat(entry.lon), parseFloat(entry
+                                            .lat)]
+                                    }
+                                }
+                            })
+                        };
+
+                        console.log(geojson);
+
+                        return geojson;
+
+                    } catch (err) {
+                        // If the updateSource interval is defined, clear the interval to stop updating the source.
+                        if (updateSourceInterval) clearInterval(updateSourceInterval);
+                        console.error(err);
+                    }
+                }
+            });
+
+        // mock live sensor report
+        const fakeSensorInterval = setInterval(async () => {
+
+            var sensorData = {
+                value: Math.floor(Math.random() * 100), // random int 0-100
+                id: 68,
+            }
+
+            try {
+                var response = await fetch(
+                    '../backend/data/aqi/send', {
+                        method: 'POST',
+                        body: JSON.stringify(sensorData)
+                    }
+                );
+            } catch (err) {
+                console.error(err);
+                clearInterval(fakeSensorInterval);
+            }
+
+        }, 500)
+
+    })();
+</script>
+
+<body>
+
+    <div id="map"></div>
+
+</body>
+
+</html>
