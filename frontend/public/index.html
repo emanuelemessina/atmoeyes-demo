@@ -97,12 +97,12 @@
                     map.getSource('aqi-data').setData(geojson);
                 }, 500)
 
-                async function getData(updateSource) {
+                async function getData(updateSourceInterval) {
 
                     try {
 
                         var response = await fetch(
-                            '../backend/data/aqi', {
+                            atmoeyes.backendUrl+"/data/aqi", {
                                 method: 'GET'
                             }
                         );
@@ -131,7 +131,7 @@
 
                     } catch (err) {
                         // If the updateSource interval is defined, clear the interval to stop updating the source.
-                        if (updateSourceInterval) clearInterval(updateSourceInterval);
+                        if (updateSourceInterval) { clearInterval(updateSourceInterval); }
                         console.error(err);
                     }
                 }
