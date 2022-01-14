@@ -1,6 +1,6 @@
 const int analogInPin = A0;
 
-unsigned int sensorValue = 0; // value read from the pot
+unsigned int sensorValue = 0;
 unsigned int outputValue = 0;
 
 void setup()
