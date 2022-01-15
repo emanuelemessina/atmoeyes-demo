@@ -1,0 +1,10 @@
+[Unit]
+Description=AtmoEyes Sensor Data Reporting Service
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/pi/atmoeyes-demo/iot/atmoservice/atmoservice.py &
+
+[Install]
+WantedBy=multi-user.target
