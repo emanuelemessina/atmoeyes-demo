@@ -1,12 +1,20 @@
-html{
+html {
     box-sizing: border-box;
 }
 
-body{
+body {
     display: flex;
     width: 100vw;
     height: 100vh;
     margin: 0;
+
+    font-family: 'Comfortaa', sans-serif;
+}
+
+#nav {
+    height: 70px;
+    background-color: #ffffff47;
+    backdrop-filter: blur(6px);
 }
 
 #map {

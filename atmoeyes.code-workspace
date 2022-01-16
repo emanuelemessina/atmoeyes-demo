@@ -9,7 +9,7 @@
 			{
 				"format": "expanded",
 				"extensionName": ".css",
-				"savePath": "/css"
+				"savePath": "/frontend/public/css"
 			}
 		],
 		"liveSassCompile.settings.showOutputWindow": false,
