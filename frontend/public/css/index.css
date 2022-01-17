@@ -10,9 +10,21 @@ body {
   width: 100vw;
   height: 100vh;
   margin: 0;
+  font-family: 'Comfortaa', sans-serif;
+}
+
+#nav {
+  height: 70px;
+  background-color: #ffffff47;
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
 }
 
 #map {
   height: 100%;
   width: 100%;
+}
+
+.mapboxgl-popup-content {
+  padding: 1rem;
 }

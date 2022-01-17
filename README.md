@@ -56,6 +56,19 @@
 ```
 <br>
 
+## Frontend code maintenance
+
+<br>
+
+Specify project specific parameters in `.atmoeyes`
+```json
+{
+    "backendUrl": "https://emanuelemessina.altervista.org/uni/ssmic2021/atmoeyes/backend"
+}
+```
+
+<br> 
+
 ## Backend code maintenance
 
 <br> 
@@ -118,10 +131,14 @@ Controller files are placed under `/controllers`.
 
 [Heatmap](https://docs.mapbox.com/mapbox-gl-js/example/heatmap-layer/)
 
-[Live Data](https://docs.mapbox.com/mapbox-gl-js/example/live-geojson/)
+[Live Data Updates](https://docs.mapbox.com/mapbox-gl-js/example/live-geojson/)
 
 ### PHP
 
 [PHP Router](https://phprouter.com/)
 
 [Medoo](https://medoo.in/api/new)
+
+### Firebase
+
+[Get Started](https://firebase.google.com/docs/hosting/quickstart)
