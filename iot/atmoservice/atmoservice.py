@@ -2,7 +2,6 @@ from http.client import HTTPException
 from json.decoder import JSONDecodeError
 import os
 import signal
-import sys
 from time import sleep
 from datetime import datetime
 import serial
@@ -80,6 +79,10 @@ while True:
                 
                 except JSONDecodeError:
                     print(f"Malformed JSON!\n")
+                    pass
+                except ConnectionError:
+                    print("Failed to connect to endpoint, retrying in 10s...")
+                    sleep(10)
                     pass
                 except HTTPException as e:
                     print(f"HTTP Error: {response.status_code}")
