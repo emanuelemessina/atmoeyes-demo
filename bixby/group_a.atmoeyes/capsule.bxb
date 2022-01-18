@@ -1,0 +1,34 @@
+capsule {
+
+  id (group_a.atmoeyes)
+
+  version (0.1.0)
+  format (3)
+  runtime-version (9)
+
+  targets {
+    target (bixby-mobile-en-US)
+    target (bixby-mobile-it-IT)
+  }
+
+  store-countries {
+    only{
+      allow (IT)
+      
+      allow(GB)
+      allow(US)
+      allow (AU)
+      allow (NZ)
+      allow (CA)
+    }
+  }
+  device-models {
+    all
+  }
+
+  store-sections{
+    section (HealthAndFitness)
+    section (Weather)
+  }
+
+}

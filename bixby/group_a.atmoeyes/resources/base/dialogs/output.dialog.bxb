@@ -1,0 +1,6 @@
+dialog (Result) {
+  match: outputData(output){
+    from-output: getSectorData(action)
+  }
+  template("#{macro('OUTPUT', output, action)}")
+}

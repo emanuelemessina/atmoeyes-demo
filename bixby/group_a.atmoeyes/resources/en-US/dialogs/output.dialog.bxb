@@ -1,0 +1,18 @@
+template-macro-def (OUTPUT) {
+  
+  params{
+    param (output){
+      type (outputData)
+      min (Required)
+      max (One)
+    }
+    param (action){
+      type(getSectorData)
+    }
+  }
+
+  content{
+    template("The AQI for sector #{value(action.sectorNumber)} is #{value(output)}")
+  }
+
+}

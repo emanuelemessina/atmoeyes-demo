@@ -1,0 +1,10 @@
+endpoints {
+  action-endpoints {
+
+    action-endpoint (getSectorData) {
+      accepted-inputs (sectorNumber)
+      local-endpoint (getSectorData.js)
+    }
+
+  }
+}

@@ -1,0 +1,11 @@
+action (getSectorData) {
+  type(Search)
+  description ("get sector number and fetch data from server")
+  collect {
+    input (sectorNumber) {
+      type (sectorNumber)
+      min (Required) max (One)
+    }
+  }
+  output (outputData)
+}

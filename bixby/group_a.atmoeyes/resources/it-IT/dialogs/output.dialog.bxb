@@ -1,0 +1,20 @@
+template-macro-def (OUTPUT) {
+  
+  params{
+    param (output){
+      type (outputData)
+      min (Required)
+      max (One)
+    }
+    param (action){
+      type(getSectorData)
+    }
+  }
+
+  content{
+    template("L'AQI per il settore #{value(action.sectorNumber)} è #{value(output)}"){
+      speech ("<speak>L'<sub alias=\"indice di qualità dell aria\">AQI</sub> per il settore #{value(action.sectorNumber)} è #{value(output)}.</speak>")
+    }
+  }
+
+}

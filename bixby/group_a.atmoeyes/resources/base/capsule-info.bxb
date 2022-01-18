@@ -1,0 +1,21 @@
+capsule-info {
+
+  description ("Atmoeyes capsule demo")
+
+  display-name (Atmoeyes)
+  developer-name (Emanuele Messina)
+  website-url (https://atmoeyws.web.app)
+  
+  dispatch-name (Atmoeyes)
+
+  icon-asset (images/icons/icon.png)
+  
+  search-keywords{
+    keyword (atmoeyes)
+    keyword (aqi)
+    keyword (smog)
+    keyword (pollution)
+    keyword (air)
+  }
+
+}

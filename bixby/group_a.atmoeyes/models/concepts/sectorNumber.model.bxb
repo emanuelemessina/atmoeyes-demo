@@ -1,0 +1,4 @@
+integer (sectorNumber) {
+  description ("sector number user wants to know info about")
+  features{transient}
+}

@@ -1,0 +1,7 @@
+hints {
+  uncategorized {
+    hint ("With Atmoeyes, get AQI for sector 71")
+    hint ("Ask Atmoeyes how's air quality on sector 69")
+    hint ("With Atmoeyes get Info about sector 73")
+  }
+}
