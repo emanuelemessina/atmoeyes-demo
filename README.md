@@ -114,9 +114,10 @@ Table names are already prefixed with `'atmoeyes_'`.
 
 #### Declaring routes in `routes.php`
 ```php 
-get('/data/aqi', 'aqi-data.php'); 
+get('/data/aqi/$optional_get_param', 'aqi-data.php'); 
 ```
-Controller files are placed under `/controllers`.
+- Controller files are placed under `/controllers`.
+- Optional GET parameters are accessible in the controller via $parameters array.
 
 <br>
 

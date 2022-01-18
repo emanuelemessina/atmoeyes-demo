@@ -13,6 +13,7 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
 // Place routes here ⬇️
 
 get('/data/aqi', 'aqi-data.php');
+get('/data/aqi/$id', 'aqi-data.php');
 
 post('/data/aqi/send', 'send-aqi-data.php');
 

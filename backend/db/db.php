@@ -136,14 +136,14 @@ class QuickQuery
      * Select from table 
      * 
      * @param string $table
-     * @param string[] $columns use "*" to select all
-     * @param array[] $data_mapping output data structure
+     * @param array[] $data_mapping output data structure or columns to select (use "*" to return all columns)
+     * @param array|null $where clauses (leave null to select all)
      * @return array[] response result of operation
      */
-    public static function select($table, $columns, $data_mapping = null)
+    public static function select($table, $data_mapping, $where = null)
     {
 
-        $select = $GLOBALS["database"]->select($table, $columns, $data_mapping);
+        $select = $GLOBALS["database"]->select($table, $data_mapping, $where);
 
         if ($GLOBALS["database"]->error) {
             http_response_code(500);
