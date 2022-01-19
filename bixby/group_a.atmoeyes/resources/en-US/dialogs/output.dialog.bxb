@@ -48,7 +48,7 @@ template-macro-def (REPORT){
   }
 
   content{
-    template("The AQI for sector #{value(action.sectorNumber)} is #{value(output)}. \n [ #{value(summary)}]"){
+    template("The AQI for sector #{value(action.sectorNumber)} is #{value(output)}. \n[ #{value(summary)}]"){
       speech ("<speak>The <sub alias=\"air quality index\">AQI</sub> for sector #{value(action.sectorNumber)} is #{value(output)}. [#{value(summary)}] </speak>")
     }
   }

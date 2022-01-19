@@ -2,7 +2,7 @@ capsule {
 
   id (group_a.atmoeyes)
 
-  version (0.1.0)
+  version (0.2.1)
   format (3)
   runtime-version (9)
 
