@@ -1,0 +1,104 @@
+layout-macro-def(INFO_CARD) {
+  
+  params{
+    param (output){
+      type (outputData)
+      min(Required)
+      max(One)
+    }
+    param (action){
+      type(getSectorData)
+    }
+  }
+  
+  content {
+    
+    if("output < 16"){
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/green.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Pulita")
+            secondary ("Settore: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+    else-if("output < 33"){
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/yellow.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Accettabile")
+            secondary ("Settore: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+    else-if("output < 50"){
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/orange.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Inquinata")
+            secondary ("Settore: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+    else-if ("output < 66"){
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/red.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Molto inquinata")
+            secondary ("Settore: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+    else{
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/purple.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Tossica")
+            secondary ("Settore: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+        
+  }
+
+}

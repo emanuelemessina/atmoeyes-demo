@@ -3,8 +3,8 @@ template-macro-def (OUTPUT) {
   params{
     param (output){
       type (outputData)
-      min (Required)
-      max (One)
+      min(Required)
+      max(One)
     }
     param (action){
       type(getSectorData)
@@ -12,9 +12,45 @@ template-macro-def (OUTPUT) {
   }
 
   content{
-    template("L'AQI per il settore #{value(action.sectorNumber)} è #{value(output)}"){
-      speech ("<speak>L'<sub alias=\"indice di qualità dell aria\">AQI</sub> per il settore #{value(action.sectorNumber)} è #{value(output)}.</speak>")
-    }
+      
+      if("output < 16"){
+        template("#{macro('REPORT', output, action, \"L'aria è pulita, non corri alcun rischio.\")}")
+      }
+      else-if("output < 33"){
+        template("#{macro('REPORT', output, action, \"L'aria è accettabile per la maggior parte delle persone, ma potrebbe non esserlo per i soggetti particolarmente sensibili.\")}")
+      }
+      else-if("output < 50"){
+        template("#{macro('REPORT', output, action, \"L'aria è inquinata, i soggetti sensibili potrebbero avere ripercussioni sulla salute.\")}")
+      }
+      else-if ("output < 66"){
+        template("#{macro('REPORT', output, action, \"L'aria è molto inquinata, chiunque potrebbe risentirne.\")}")
+      }
+      else{
+        template("#{macro('REPORT', output, action, \"L'aria è tossica ed è un pericolo per la salute, non bisogna uscire.\")}")
+      }
   }
 
 }
+
+template-macro-def (REPORT){
+  params{
+    param (output){
+      type (outputData)
+      min(Required)
+      max(One)
+    }
+    param (action){
+      type(getSectorData)
+    }
+    param(summary){
+      type(viv.core.Text)
+    }
+  }
+
+  content{
+    template("L'AQI per il settore #{value(action.sectorNumber)} è #{value(output)}. \n [ #{value(summary)}]"){
+      speech ("<speak>L'<sub alias=\"indice di qualità dell aria\">AQI</sub> per il settore #{value(action.sectorNumber)} è #{value(output)}. [#{value(summary)}] </speak>")
+    }
+  }
+}
+

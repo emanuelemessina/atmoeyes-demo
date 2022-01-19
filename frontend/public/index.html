@@ -137,7 +137,7 @@
                 'waterway-label'
             );
 
-            // 3) add circle layer
+            // 3b) add circle layer
             map.addLayer({
                     id: 'aqi-circle-layer',
                     type: 'circle',
@@ -149,7 +149,8 @@
                             "interpolate",
                             [
                                 "cubic-bezier",
-                                .55, .23, .45, 1
+                                .55, .23, 
+                                .45, 1
                             ],
                             ["get", "aqi"],
                             0,

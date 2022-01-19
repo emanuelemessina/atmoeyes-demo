@@ -1,0 +1,35 @@
+result-view {
+  
+  match: outputData(output){
+    from-output: getSectorData(action)
+  }
+
+  message{
+    if("output != -1"){
+      template("#{macro('OUTPUT', output, action)}")
+    }
+    else{
+      template("Il settore #{value(action.sectorNumber)} non è disponibile.")
+    }
+  }
+
+  render {
+    layout{
+      section{
+        content{
+          if("output != -1"){
+           layout-macro (INFO_CARD){
+             param(output){
+               expression (output)
+             }
+             param(action){
+               expression(action)
+             }
+           }
+          }
+        }
+      }
+    }
+  }
+  
+}

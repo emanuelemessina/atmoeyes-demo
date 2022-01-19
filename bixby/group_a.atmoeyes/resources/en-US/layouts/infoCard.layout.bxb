@@ -1,0 +1,104 @@
+layout-macro-def(INFO_CARD) {
+  
+  params{
+    param (output){
+      type (outputData)
+      min(Required)
+      max(One)
+    }
+    param (action){
+      type(getSectorData)
+    }
+  }
+  
+  content {
+    
+    if("output < 16"){
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/green.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Clean")
+            secondary ("Sector: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+    else-if("output < 33"){
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/yellow.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Acceptable")
+            secondary ("Sector: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+    else-if("output < 50"){
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/orange.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Polluted")
+            secondary ("Sector: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+    else-if ("output < 66"){
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/red.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Severe pollution")
+            secondary ("Sector: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+    else{
+      cell-card {
+        slot1 {
+          image {
+            url ("images/icons/purple.png")
+            shape(Circle)
+          }
+        }
+        slot2 {
+          content {
+            order (PrimarySecondary)
+            primary ("Toxic")
+            secondary ("Sector: #{value(action.sectorNumber)} | AQI: #{value(output)}")
+          }
+        }
+      }
+    }
+        
+  }
+
+}
