@@ -59,10 +59,83 @@
 
             const initialData = await getData(); // 1) get data
 
-            map.addSource('aqi-data', { // 2) register data source
+            map.addSource('aqi-data', { // 2a) sensor data
                 type: 'geojson',
                 data: initialData
             });
+
+            map.addSource('aqi-heat', { // 2b) interpolated heat data points
+                type: 'geojson',
+                data: 'heatmap.geojson'
+            })
+
+            // 3a) heat layer
+            map.addLayer({
+                    'id': 'aqi-heat-layer',
+                    'type': 'heatmap',
+                    'source': 'aqi-heat',
+                    'maxzoom': 16,
+                    'paint': {
+                        'heatmap-weight': [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            9,
+                            0.5,
+                            15,
+                            0.7
+                        ],
+                        // Increase the heatmap color weight weight by zoom level
+                        // heatmap-intensity is a multiplier on top of heatmap-weight
+                        'heatmap-intensity': [
+                            "interpolate",
+                            ["linear"],
+                            ["zoom"],
+                            0,
+                            0,
+                            15,
+                            0.7
+                        ],
+                        'heatmap-color': [
+                            "interpolate",
+                            ["exponential", 1.21],
+                            ["heatmap-density"],
+                            0,
+                            "rgba(0, 0, 255, 0)",
+                            0.1,
+                            "royalblue",
+                            0.3,
+                            "cyan",
+                            0.4,
+                            "hsl(120, 100%, 50%)",
+                            0.5,
+                            "hsl(60, 100%, 50%)",
+                            0.7,
+                            "hsl(0, 100%, 50%)"
+                        ],
+                        'heatmap-radius': [
+                            "interpolate",
+                            ["exponential", 1.96],
+                            ["zoom"],
+                            6,
+                            1,
+                            15,
+                            100
+                        ],
+                        // Transition from heatmap to circle layer by zoom level
+                        'heatmap-opacity': [
+                            'interpolate',
+                            ['linear'],
+                            ['zoom'],
+                            14,
+                            0.5,
+                            16,
+                            0
+                        ]
+                    }
+                },
+                'waterway-label'
+            );
 
             // 3) add circle layer
             map.addLayer({
@@ -74,12 +147,23 @@
                         // assign color values be applied to points depending on their density
                         'circle-color': [
                             "interpolate",
-                            ["linear"],
+                            [
+                                "cubic-bezier",
+                                .55, .23, .45, 1
+                            ],
                             ["get", "aqi"],
                             0,
-                            "hsl(180, 88%, 88%)",
+                            "hsl(183, 100%, 84%)",
+                            16,
+                            "hsl(144, 100%, 69%)",
+                            33,
+                            "hsl(49, 100%, 69%)",
+                            50,
+                            "hsl(33, 100%, 60%)",
+                            66,
+                            "hsl(0, 100%, 60%)",
                             100,
-                            "hsl(0, 100%, 48%)"
+                            "hsl(298, 100%, 63%)"
                         ],
                         // increase radius as zoom increases
                         'circle-radius': [
@@ -105,7 +189,8 @@
                         'circle-opacity': {
                             default: 0.7,
                             stops: [
-                                [14, 0.7],
+                                [14, 0],
+                                [16, 0.7],
                             ]
                         }
                     }
@@ -113,12 +198,46 @@
                 'waterway-label'
             );
 
-            // 4) tooltips
+            // 4) tooltips with mocked sensor readings
+
+            function rndInt(scale) {
+                return Math.floor(Math.random() * scale);
+            }
+            const measureUnit = {
+                ppb: "ppb",
+                ugm3: "&mu;g/m<sup>3</sup>"
+            }
 
             map.on('click', 'aqi-circle-layer', (event) => {
-                new mapboxgl.Popup()
+
+                const agents = {
+                    "O<sub>3</sub>": `${rndInt(40)} ${measureUnit.ppb}`,
+                    "PM<sub>2.5</sub>": `${rndInt(50)} ${measureUnit.ugm3}`,
+                    "PM<sub>10</sub>": `${rndInt(100)} ${measureUnit.ugm3}`,
+                    "CO": `${rndInt(100)} ${measureUnit.ppb}`,
+                    "SO<sub>2</sub>": `${rndInt(2)} ${measureUnit.ppb}`,
+                    "C<sub>6</sub>H<sub>6</sub>": `${rndInt(1)} ${measureUnit.ppb}`,
+                    "NO<sub>2</sub>": `${rndInt(60)} ${measureUnit.ppb}`,
+                    "UV": `${rndInt(10)}`
+                }
+                let agentsList = '';
+
+                Object.keys(agents).forEach(key => {
+                    agentsList +=
+                        `<li class="d-flex"><p class="flex-fill me-3">${key}</p> <p class="text-muted font-monospace">${agents[key]}</p></li>`
+                })
+
+                new mapboxgl.Popup({
+                        maxWidth: "600px"
+                    })
                     .setLngLat(event.features[0].geometry.coordinates)
-                    .setHTML(`<strong>AQI:</strong> ${event.features[0].properties.aqi}`)
+                    .setHTML(`
+                        <strong>AQI:</strong> ${event.features[0].properties.aqi}
+                        <br>
+                        <ul class="p-0 ms-3 mb-0 mt-3">
+                        ${agentsList}
+                        </ul>
+                    `)
                     .addTo(map);
             });
 
@@ -212,8 +331,12 @@
 
     <div id="nav" class="d-flex p-3 fixed-top">
 
-        <div class="h-100 flex-fill">
+        <div class="h-100 flex-fill d-flex">
             <img src="static/Logo.png" class="img-fluid h-100">
+            <div id="title"
+                class="border-start border-2 ms-3 ps-3 d-flex justify-content-center align-items-center fw-bold">
+                AQI Layer
+            </div>
         </div>
 
         <div class="d-flex ms-5 justify-content-center align-items-center">
