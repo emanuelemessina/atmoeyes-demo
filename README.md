@@ -1,5 +1,20 @@
 # AtmoEyes Demo
 
+<br>
+
+## What is this?
+
+This repo contains all the code used for the demo
+ presented by _Group A_ of UNIPA (Università degli Studi di Palermo)
+for "Samsung Innovation Campus 2021 Smart Things Edition" in Palermo. 
+Eventually 3 of the 4 members of _Group A (atmoeyes)_ won the edition.
+
+<br>
+
+Below are developement notes.
+
+<br>
+
 ## Routes
 
 <br>
